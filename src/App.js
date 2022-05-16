@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Redirect,
   Route,
-  Switch,
+  Switch
 } from "react-router-dom";
 import AccessibleNavigationAnnouncer from "./components/AccessibleNavigationAnnouncer";
 
@@ -24,7 +24,7 @@ function App() {
 
           {/* Place new routes over this */}
           <Route path="/" component={Layout} />
-          {/* If you have an index page, you can remothis Redirect */}
+          {/* If you have an index page, you can Redirect */}
           <Redirect exact from="/" to="/login" />
         </Switch>
       </Router>
