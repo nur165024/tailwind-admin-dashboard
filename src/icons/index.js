@@ -7,6 +7,7 @@ import { ReactComponent as CouponsIcon } from "./coupons.svg";
 import { ReactComponent as CustomersIcon } from "./customers.svg";
 import { ReactComponent as DeliveredOrderIcon } from "./deliveredOrder.svg";
 import { ReactComponent as DetailsIcon } from "./details.svg";
+import { ReactComponent as DownloadIcon } from "./download.svg";
 import { ReactComponent as DropdownIcon } from "./dropdown.svg";
 import { ReactComponent as EditIcon } from "./edit.svg";
 import { ReactComponent as ForbiddenIcon } from "./forbidden.svg";
@@ -80,4 +81,5 @@ export {
   OutStaffIcon,
   SettingIcon,
   DetailsIcon,
+  DownloadIcon,
 };

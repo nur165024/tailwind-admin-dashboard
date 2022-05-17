@@ -5,7 +5,7 @@ const Dashboard = lazy(() => import("../pages/Dashboard"));
 const Products = lazy(() => import("../pages/Products"));
 const Category = lazy(() => import("../pages/Category"));
 const Customers = lazy(() => import("../pages/Customers"));
-const Orders = lazy(() => import("../pages/Buttons"));
+const Orders = lazy(() => import("../pages/Orders"));
 const Coupons = lazy(() => import("../pages/Coupons"));
 const OurStaff = lazy(() => import("../pages/OurStaff"));
 const Setting = lazy(() => import("../pages/Setting"));

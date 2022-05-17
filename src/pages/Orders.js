@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
-import { DetailsIcon } from "../icons";
+import { DetailsIcon, DownloadIcon } from "../icons";
 import orderData from "../utils/demo/orders";
 
 function Orders() {
@@ -74,23 +74,10 @@ function Orders() {
                 class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full rounded-md h-12"
                 type="button"
               >
-                <span class="mr-3">
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                  </svg>
+                <span>Download All orders</span>
+                <span class="mr-3 ml-2">
+                  <DownloadIcon />
                 </span>
-                Download All orders
               </button>
             </div>
           </form>
