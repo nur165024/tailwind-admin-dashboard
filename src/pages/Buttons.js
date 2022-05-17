@@ -15,7 +15,7 @@ import SectionTitle from "../components/Typography/SectionTitle";
 import { DetailsIcon } from "../icons";
 import orderData from "../utils/demo/orders";
 
-function Buttons() {
+function Orders() {
   // setup pages
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
@@ -203,4 +203,4 @@ function Buttons() {
   );
 }
 
-export default Buttons;
+export default Orders;

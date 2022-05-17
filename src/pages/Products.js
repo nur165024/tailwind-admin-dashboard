@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Button,
   Pagination,
   Table,
@@ -11,19 +12,20 @@ import {
   TableRow,
 } from "@windmill/react-ui";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import PageTitle from "../components/Typography/PageTitle";
 import SectionTitle from "../components/Typography/SectionTitle";
-import { EditIcon, TrashIcon } from "../icons";
-import categoryData from "../utils/demo/category";
+import { DetailsIcon, EditIcon, TrashIcon } from "../icons";
+import productData from "../utils/demo/products";
 
-function Cards() {
+function Products() {
   // setup pages
-  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
 
   // pagination setup
   const resultsPerPage = 10;
-  const totalResults = categoryData.length;
+  const totalResults = productData.length;
 
   // pagination change control
   function onPageChange(p) {
@@ -31,16 +33,16 @@ function Cards() {
   }
 
   useEffect(() => {
-    setCategories(
-      categoryData.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+    setProducts(
+      productData.slice((page - 1) * resultsPerPage, page * resultsPerPage)
     );
   }, [page]);
 
   return (
     <>
-      <PageTitle>Category</PageTitle>
+      <PageTitle>Products</PageTitle>
 
-      <SectionTitle>Category List</SectionTitle>
+      <SectionTitle>Product List</SectionTitle>
 
       <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <div className="p-4">
@@ -50,7 +52,7 @@ function Cards() {
                 class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 type="search"
                 name="search"
-                placeholder="Search by Category name"
+                placeholder="Search by product name"
               />
               <button
                 type="submit"
@@ -94,6 +96,16 @@ function Cards() {
               </select>
             </div>
 
+            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+              <select class="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white">
+                <option value="All" hidden="">
+                  Price
+                </option>
+                <option value="Low">Low to High</option>
+                <option value="High">High to Low</option>
+              </select>
+            </div>
+
             <div class="w-full md:w-56 lg:w-56 xl:w-56">
               <button
                 class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full rounded-md h-12"
@@ -115,10 +127,47 @@ function Cards() {
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
                 </span>
-                Add Category
+                Add Product
               </button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
+        <div className="p-4">
+          <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-3">
+            <div class="col-span-2">
+              <input
+                type="file"
+                accept="text/csv, .csv, application/vnd.ms-excel"
+                style={{ display: "none" }}
+              />
+
+              <div className="items-center border-dashed border rounded-md border-green-600 flex flex-col h-12 justify-center py-0 px-1 cursor-pointer">
+                <span class="text-sm text-gray-500">Drop CSV file</span>
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <button
+                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12"
+                type="button"
+              >
+                Upload
+              </button>
+              <div class="w-full">
+                <a>
+                  <button
+                    class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
+                    type="button"
+                  >
+                    Download
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -126,36 +175,53 @@ function Cards() {
         <Table>
           <TableHeader>
             <tr>
-              <TableCell>ID</TableCell>
-              <TableCell>ICON</TableCell>
-              <TableCell>PARENT</TableCell>
-              <TableCell>CHILDREN</TableCell>
-              <TableCell>TYPE</TableCell>
+              <TableCell>PRODUCT NAME</TableCell>
+              <TableCell>CATEGORY</TableCell>
+              <TableCell>PRICE</TableCell>
+              <TableCell>STOCK</TableCell>
+              <TableCell>STATUS</TableCell>
+              <TableCell>DETAILS</TableCell>
+              <TableCell>DATE</TableCell>
               <TableCell>ACTIONS</TableCell>
             </tr>
           </TableHeader>
 
           <TableBody>
-            {categories.map((category, i) => (
+            {products.map((product, i) => (
               <TableRow key={i}>
                 <TableCell>
-                  <span className="text-sm">{category.id}</span>
+                  <div className="flex items-center gap-2">
+                    <Avatar size="large" src={product.image} alt="Judith" />
+                    <span className="text-sm">{product.title}</span>
+                  </div>
                 </TableCell>
 
                 <TableCell>
-                  <Avatar size="large" src={category.icon} alt="Judith" />
+                  <span className="text-sm">{product.parent}</span>
                 </TableCell>
 
                 <TableCell>
-                  <span className="text-sm">{category.parent}</span>
+                  <span className="text-sm">$ {product.price}</span>
                 </TableCell>
 
                 <TableCell>
-                  <span className="text-sm">{category.children}</span>
+                  <span className="text-sm">{product.quantity}</span>
                 </TableCell>
 
                 <TableCell>
-                  <span className="text-sm">{category.type}</span>
+                  <Badge type={product.status}>Selling</Badge>
+                </TableCell>
+
+                <TableCell>
+                  <Link to="" className="text-sm">
+                    <DetailsIcon />
+                  </Link>
+                </TableCell>
+
+                <TableCell>
+                  <span className="text-sm">
+                    {new Date(product.updatedAt).toLocaleDateString()}
+                  </span>
                 </TableCell>
 
                 <TableCell>
@@ -186,4 +252,4 @@ function Cards() {
   );
 }
 
-export default Cards;
+export default Products;

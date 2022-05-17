@@ -14,7 +14,7 @@ import PageTitle from "../components/Typography/PageTitle";
 import { EditIcon, TrashIcon } from "../icons";
 import customerData from "../utils/demo/tableData";
 
-function Charts() {
+function Customers() {
   // setup pages
   const [customers, setCustomers] = useState([]);
   const [page, setPage] = useState(1);
@@ -125,4 +125,4 @@ function Charts() {
   );
 }
 
-export default Charts;
+export default Customers;
