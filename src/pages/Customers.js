@@ -40,17 +40,17 @@ function Customers() {
 
       <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <div className="p-4">
-          <form class="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
-            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+          <form className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <input
-                class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 type="search"
                 name="search"
                 placeholder="Search by customers name"
               />
               <button
                 type="submit"
-                class="absolute right-0 top-0 mt-5 mr-1"
+                className="absolute right-0 top-0 mt-5 mr-1"
               ></button>
             </div>
           </form>
