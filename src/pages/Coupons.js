@@ -30,6 +30,22 @@ function Coupons() {
     setPage(p);
   }
 
+  // coupon name search
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const searchData = event.target.value;
+      const nameFilter = couponData.filter((coupon) => {
+        return (
+          coupon.code.toLowerCase().indexOf(searchData.toLowerCase()) !== -1
+        );
+      });
+      setCoupons(
+        nameFilter.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+      );
+    }
+  };
+
   // handle modal
   const openModal = () => {
     setModal(true);
@@ -51,14 +67,14 @@ function Coupons() {
 
       <SectionTitle>Coupon list</SectionTitle>
 
-      <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
+      <div className="rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs  mb-5">
         <div className="p-4">
           <form className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <input
-                className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                className=" px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 type="search"
-                name="search"
+                onKeyPress={handleKeyPress}
                 placeholder="Search by coupons code/name"
               />
               <button
@@ -69,7 +85,7 @@ function Coupons() {
 
             <div className="w-full md:w-56 lg:w-56 xl:w-56">
               <button
-                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full rounded-md h-12"
+                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full rounded-md h-12"
                 type="button"
                 onClick={openModal}
               >
@@ -182,18 +198,18 @@ function Coupons() {
         style={{ transform: `translate(${!modal ? "100" : "0"}%)` }}
       >
         <button
-          class="absolute focus:outline-none z-50 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 mt-6 right-0 left-auto w-10 h-10 rounded-full block text-center"
+          className="absolute focus:outline-none z-50 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 mt-6 right-0 left-auto w-10 h-10 rounded-full block text-center"
           type="button"
           onClick={closeModal}
         >
           <svg
             stroke="currentColor"
             fill="none"
-            stroke-width="2"
+            strokeWidth="2"
             viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="mx-auto"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mx-auto"
             height="1em"
             width="1em"
             xmlns="http://www.w3.org/2000/svg"
@@ -203,44 +219,44 @@ function Coupons() {
           </svg>
         </button>
 
-        <div class="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
           <div>
-            <h4 class="text-xl font-medium">Add Coupon</h4>
-            <p class="mb-0 text-sm">
+            <h4 className="text-xl font-medium">Add Coupon</h4>
+            <p className="mb-0 text-sm">
               Add your coupon and necessary information from here
             </p>
           </div>
         </div>
 
-        <form class="block">
+        <form className="block">
           <div className="px-6 pt-8 h-full flex-grow w-full pb-40 md:pb-32 lg:pb-32 xl:pb-32">
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+              <label className="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Coupon Banner Image
               </label>
-              <div class="col-span-8 sm:col-span-4">
-                <div class="w-full text-center">
+              <div className="col-span-8 sm:col-span-4">
+                <div className="w-full text-center">
                   <div
-                    class="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
+                    className="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
                     role="button"
-                    tabindex="0"
+                    tabIndex="0"
                   >
                     <input
                       accept="image/*"
                       type="file"
-                      autocomplete="off"
-                      tabindex="-1"
+                      autoComplete="off"
+                      tabIndex="-1"
                       style={{ display: "none" }}
                     />
-                    <span class="mx-auto flex justify-center">
+                    <span className="mx-auto flex justify-center">
                       <svg
                         stroke="currentColor"
                         fill="none"
-                        stroke-width="2"
+                        strokeWidth="2"
                         viewBox="0 0 24 24"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="text-3xl text-green-500"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-3xl text-green-500"
                         height="1em"
                         width="1em"
                         xmlns="http://www.w3.org/2000/svg"
@@ -251,8 +267,8 @@ function Coupons() {
                         <polyline points="16 16 12 12 8 16"></polyline>
                       </svg>
                     </span>
-                    <p class="text-sm mt-2">Drag your image here</p>
-                    <em class="text-xs text-gray-400">
+                    <p className="text-sm mt-2">Drag your image here</p>
+                    <em className="text-xs text-gray-400">
                       (Only *.jpeg and *.png images will be accepted)
                     </em>
                   </div>
@@ -260,13 +276,13 @@ function Coupons() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Campaign Name
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="title"
                   placeholder="Campaign Name"
@@ -274,13 +290,13 @@ function Coupons() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Campaign Code
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="slug"
                   placeholder="Campaign Code"
@@ -288,26 +304,26 @@ function Coupons() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Coupon Validity Time
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="datetime-local"
                   name="slug"
                 />
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Discount Percentage
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="slug"
                   placeholder="Discount Percentage"
@@ -315,13 +331,13 @@ function Coupons() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium">
                 Minimum Amount
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="slug"
                   placeholder="Minimum Amount required"
@@ -329,13 +345,13 @@ function Coupons() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Type
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <select
-                  class="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   name="type"
                 >
                   <option value="" hidden="">
@@ -359,19 +375,19 @@ function Coupons() {
             </div>
           </div>
 
-          <div class="fixed bottom-0 w-full right-0 py-4 lg:py-8 px-6 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+          <div className="fixed bottom-0 w-full right-0 py-4 lg:py-8 px-6 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <button
-                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12 bg-white w-full text-red-500 hover:bg-red-50 hover:border-red-100 hover:text-red-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-red-700"
+                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12 bg-white w-full text-red-500 hover:bg-red-50 hover:border-red-100 hover:text-red-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-red-700"
                 type="button"
                 onClick={closeModal}
               >
                 Cancel
               </button>
             </div>
-            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <button
-                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
+                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
                 type="submit"
               >
                 {" "}

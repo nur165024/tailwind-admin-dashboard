@@ -28,6 +28,22 @@ function Customers() {
     setPage(p);
   }
 
+  // curspmer name search
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const searchData = event.target.value;
+      const nameFilter = customerData.filter((customer) => {
+        return (
+          customer.name.toLowerCase().indexOf(searchData.toLowerCase()) !== -1
+        );
+      });
+      setCustomers(
+        nameFilter.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+      );
+    }
+  };
+
   useEffect(() => {
     setCustomers(
       customerData.slice((page - 1) * resultsPerPage, page * resultsPerPage)
@@ -38,15 +54,18 @@ function Customers() {
     <>
       <PageTitle>Customers</PageTitle>
 
-      <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
+      <div
+        className="rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white 
+      min-w-0 shadow-xs  dark:bg-gray-800 mb-5"
+      >
         <div className="p-4">
           <form className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <input
-                className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                className=" px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 type="search"
-                name="search"
                 placeholder="Search by customers name"
+                onKeyPress={handleKeyPress}
               />
               <button
                 type="submit"

@@ -42,6 +42,67 @@ function Products() {
     setModal(false);
   };
 
+  // product name search
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const searchData = event.target.value;
+      const nameFilter = productData.filter((product) => {
+        return (
+          product.title.toLowerCase().indexOf(searchData.toLowerCase()) !== -1
+        );
+      });
+      setProducts(
+        nameFilter.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+      );
+    }
+  };
+
+  // product category search
+  const handleCategorySearch = (event) => {
+    const searchData = event.target.value;
+    if (searchData === "") {
+      setProducts(
+        productData.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+      );
+    } else {
+      const productCategoryFilter = productData.filter((product) => {
+        return product.parent.toLowerCase() === searchData.toLowerCase();
+      });
+
+      setProducts(
+        productCategoryFilter.slice(
+          (page - 1) * resultsPerPage,
+          page * resultsPerPage
+        )
+      );
+    }
+  };
+
+  // product price ordering
+  const handlePriceOrdering = (event) => {
+    const searchData = event.target.value;
+    let productPriceSort;
+
+    if (searchData === "low") {
+      productPriceSort = productData.sort((a, b) => {
+        return a.price > b.price ? 1 : -1;
+      });
+    } else if (searchData === "high") {
+      productPriceSort = productData.sort((a, b) => {
+        return a.price < b.price ? 1 : -1;
+      });
+    } else {
+      productPriceSort = productData.sort((a, b) => {
+        return 0;
+      });
+    }
+
+    setProducts(
+      productPriceSort.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+    );
+  };
+
   useEffect(() => {
     setProducts(
       productData.slice((page - 1) * resultsPerPage, page * resultsPerPage)
@@ -54,15 +115,15 @@ function Products() {
 
       <SectionTitle>Product List</SectionTitle>
 
-      <div className="min-w-0 rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white dark:bg-gray-800 min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
+      <div className="rounded-lg ring-1 ring-black ring-opacity-4 overflow-hidden bg-white min-w-0 shadow-xs dark:bg-gray-800 mb-5">
         <div className="p-4">
           <form className="py-3 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex">
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <input
-                className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                className="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 type="search"
-                name="search"
                 placeholder="Search by product name"
+                onKeyPress={handleKeyPress}
               />
               <button
                 type="submit"
@@ -71,8 +132,11 @@ function Products() {
             </div>
 
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
-              <select className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white">
-                <option value="All" hidden="">
+              <select
+                className="block w-full px-2 py-1 dark:text-gray-300 rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none bg-gray-100 border-transparent focus:bg-white"
+                onChange={handleCategorySearch}
+              >
+                <option value="" hidden="">
                   Category
                 </option>
                 <option value="Fish &amp; Meat">Fish &amp; Meat</option>
@@ -107,12 +171,15 @@ function Products() {
             </div>
 
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
-              <select className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white">
-                <option value="All" hidden="">
+              <select
+                className="px-2 py-1 dark:text-gray-300 frounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                onChange={handlePriceOrdering}
+              >
+                <option value="" hidden="">
                   Price
                 </option>
-                <option value="Low">Low to High</option>
-                <option value="High">High to Low</option>
+                <option value="low">Low to High</option>
+                <option value="high">High to Low</option>
               </select>
             </div>
 
@@ -266,18 +333,18 @@ function Products() {
         style={{ transform: `translate(${!modal ? "100" : "0"}%)` }}
       >
         <button
-          class="absolute focus:outline-none z-50 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 mt-6 right-0 left-auto w-10 h-10 rounded-full block text-center"
+          className="absolute focus:outline-none z-50 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 mt-6 right-0 left-auto w-10 h-10 rounded-full block text-center"
           type="button"
           onClick={closeModal}
         >
           <svg
             stroke="currentColor"
             fill="none"
-            stroke-width="2"
+            strokeWidth="2"
             viewBox="0 0 24 24"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="mx-auto"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mx-auto"
             height="1em"
             width="1em"
             xmlns="http://www.w3.org/2000/svg"
@@ -286,47 +353,47 @@ function Products() {
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <div class="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
           <div>
-            <h4 class="text-xl font-medium">Add Product</h4>
-            <p class="mb-0 text-sm">
+            <h4 className="text-xl font-medium">Add Product</h4>
+            <p className="mb-0 text-sm">
               Add your product and necessary information from here
             </p>
           </div>
         </div>
 
-        <form class="block">
+        <form className="block">
           <div
             className="px-6 pt-8 flex-grow w-full pb-40 md:pb-32 lg:pb-32 xl:pb-32 overflow-y-scroll"
             style={{ height: 850 }}
           >
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+              <label className="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Image
               </label>
-              <div class="col-span-8 sm:col-span-4">
-                <div class="w-full text-center">
+              <div className="col-span-8 sm:col-span-4">
+                <div className="w-full text-center">
                   <div
-                    class="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
+                    className="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
                     role="button"
-                    tabindex="0"
+                    tabIndex="0"
                   >
                     <input
                       accept="image/*"
                       type="file"
-                      autocomplete="off"
-                      tabindex="-1"
+                      autoComplete="off"
+                      tabIndex="-1"
                       style={{ display: "none" }}
                     />
-                    <span class="mx-auto flex justify-center">
+                    <span className="mx-auto flex justify-center">
                       <svg
                         stroke="currentColor"
                         fill="none"
-                        stroke-width="2"
+                        strokeWidth="2"
                         viewBox="0 0 24 24"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="text-3xl text-green-500"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-3xl text-green-500"
                         height="1em"
                         width="1em"
                         xmlns="http://www.w3.org/2000/svg"
@@ -337,8 +404,8 @@ function Products() {
                         <polyline points="16 16 12 12 8 16"></polyline>
                       </svg>
                     </span>
-                    <p class="text-sm mt-2">Drag your image here</p>
-                    <em class="text-xs text-gray-400">
+                    <p className="text-sm mt-2">Drag your image here</p>
+                    <em className="text-xs text-gray-400">
                       (Only *.jpeg and *.png images will be accepted)
                     </em>
                   </div>
@@ -346,13 +413,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium">
                 Product SKU
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="px-3 py-1 focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm block w-full bg-gray-100 border-transparent focus:bg-white"
+                  className="px-3 py-1 focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm block w-full bg-gray-100 border-transparent focus:bg-white"
                   type="text"
                   name="sku"
                   placeholder="Product SKU"
@@ -360,13 +427,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Title/Name
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="title"
                   placeholder="Product title"
@@ -374,13 +441,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Slug
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="slug"
                   placeholder="Product slug"
@@ -388,28 +455,28 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Description
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <textarea
-                  class="block w-full text-sm dark:text-gray-300 rounded-md focus:outline-none form-textarea focus:border-purple-400 border-gray-300 dark:border-gray-600 dark:focus:border-gray-600 dark:bg-gray-700 dark:focus:ring-gray-300 focus:ring focus:ring-purple-300 border text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                  className="block w-full text-sm dark:text-gray-300 rounded-md focus:outline-none form-textarea focus:border-purple-400 border-gray-300 dark:border-gray-600 dark:focus:border-gray-600 dark:bg-gray-700 dark:focus:ring-gray-300 focus:ring focus:ring-purple-300 border text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                   name="description"
                   placeholder="Product details"
                   rows="4"
-                  spellcheck="false"
+                  spellCheck="false"
                 ></textarea>
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Parent Category
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <select
-                  class="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   name="parent"
                 >
                   <option value="" hidden="">
@@ -449,13 +516,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Child Category
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <select
-                  class="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   name="children"
                 >
                   <option value="" hidden="">
@@ -517,13 +584,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Type
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <select
-                  class="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-2 py-1 text-sm dark:text-gray-300 focus:outline-none rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   name="type"
                 >
                   <option value="" hidden="">
@@ -546,13 +613,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Unit (kg/pc/lb/ml/g...etc)
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="unit"
                   placeholder="Unit"
@@ -560,13 +627,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Quantity
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="number"
                   name="quantity"
                   placeholder="Quantity"
@@ -574,13 +641,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Price
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="number"
                   name="originalPrice"
                   placeholder="Price"
@@ -588,13 +655,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Sale Price
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="number"
                   name="salePrice"
                   placeholder="Sale price"
@@ -602,13 +669,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Sale Price
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="number"
                   name="salePrice"
                   placeholder="Sale price"
@@ -616,13 +683,13 @@ function Products() {
               </div>
             </div>
 
-            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label className="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
                 Product Tag
               </label>
-              <div class="col-span-8 sm:col-span-4">
+              <div className="col-span-8 sm:col-span-4">
                 <input
-                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  className="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                   type="text"
                   name="salePrice"
                   placeholder="Product Tag (Write then press enter to add new tag )"
@@ -631,19 +698,19 @@ function Products() {
             </div>
           </div>
 
-          <div class="fixed bottom-0 w-full right-0 py-4 lg:py-8 px-6 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+          <div className="fixed bottom-0 w-full right-0 py-4 lg:py-8 px-6 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <button
-                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12 bg-white w-full text-red-500 hover:bg-red-50 hover:border-red-100 hover:text-red-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-red-700"
+                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12 bg-white w-full text-red-500 hover:bg-red-50 hover:border-red-100 hover:text-red-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-red-700"
                 type="button"
                 onClick={closeModal}
               >
                 Cancel
               </button>
             </div>
-            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+            <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
               <button
-                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
+                className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
                 type="submit"
               >
                 {" "}

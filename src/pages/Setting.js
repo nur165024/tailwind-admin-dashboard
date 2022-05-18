@@ -21,13 +21,13 @@ const Setting = () => {
                   <div
                     className="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
                     role="button"
-                    tabindex="0"
+                    tabIndex="0"
                   >
                     <input
                       accept="image/*"
                       type="file"
-                      autocomplete="off"
-                      tabindex="-1"
+                      autoComplete="off"
+                      tabIndex="-1"
                       style={{ display: "none" }}
                     />
                     <span className="mx-auto flex justify-center">
