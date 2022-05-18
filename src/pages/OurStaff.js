@@ -19,6 +19,7 @@ const OurStaff = () => {
   // setup pages
   const [outStaffs, setOutStaffs] = useState([]);
   const [page, setPage] = useState(1);
+  const [modal, setModal] = useState(false);
 
   // pagination setup
   const resultsPerPage = 10;
@@ -28,6 +29,15 @@ const OurStaff = () => {
   function onPageChange(p) {
     setPage(p);
   }
+
+  // handle modal
+  const openModal = () => {
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
 
   useEffect(() => {
     setOutStaffs(
@@ -61,6 +71,7 @@ const OurStaff = () => {
               <button
                 className="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full rounded-md h-12"
                 type="button"
+                onClick={openModal}
               >
                 <span className="mr-3">
                   <svg
@@ -153,6 +164,206 @@ const OurStaff = () => {
           />
         </TableFooter>
       </TableContainer>
+
+      {/* product create modal */}
+      <div
+        className="w-full md:w-7/12 lg:w-6/12 xl:w-6/12 h-full dark:bg-gray-700 dark:text-gray-200 ring-1 ring-black ring-opacity-4 overflow-hidden bg-white fixed right-0 top-0 z-40 transition duration-500 ease-in-out"
+        style={{ transform: `translate(${!modal ? "100" : "0"}%)` }}
+      >
+        <button
+          class="absolute focus:outline-none z-50 text-red-500 hover:bg-red-100 hover:text-gray-700 transition-colors duration-150 bg-white shadow-md mr-6 mt-6 right-0 left-auto w-10 h-10 rounded-full block text-center"
+          type="button"
+          onClick={closeModal}
+        >
+          <svg
+            stroke="currentColor"
+            fill="none"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="mx-auto"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+          <div>
+            <h4 class="text-xl font-medium">Add Staff</h4>
+            <p class="mb-0 text-sm">
+              Add your staff necessary information from here
+            </p>
+          </div>
+        </div>
+
+        <form class="block">
+          <div className="px-6 pt-8 h-full flex-grow w-full pb-40 md:pb-32 lg:pb-32 xl:pb-32">
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Staff Image
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <div class="w-full text-center">
+                  <div
+                    class="px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <input
+                      accept="image/*"
+                      type="file"
+                      autocomplete="off"
+                      tabindex="-1"
+                      style={{ display: "none" }}
+                    />
+                    <span class="mx-auto flex justify-center">
+                      <svg
+                        stroke="currentColor"
+                        fill="none"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="text-3xl text-green-500"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline points="16 16 12 12 8 16"></polyline>
+                        <line x1="12" y1="12" x2="12" y2="21"></line>
+                        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                        <polyline points="16 16 12 12 8 16"></polyline>
+                      </svg>
+                    </span>
+                    <p class="text-sm mt-2">Drag your image here</p>
+                    <em class="text-xs text-gray-400">
+                      (Only *.jpeg and *.png images will be accepted)
+                    </em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Name
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <input
+                  class="px-3 py-1 focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  type="text"
+                  name="title"
+                  placeholder="Staff Name"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Email
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <input
+                  class="px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  type="email"
+                  name="slug"
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Password
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <input
+                  class="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  type="password"
+                  name="slug"
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Contact Number
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <input
+                  class="px-3 py-1 dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  type="text"
+                  name="slug"
+                  placeholder="Phone Number"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-sm text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Joining Date
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <input
+                  class="block w-full px-3 py-1 text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  type="datetime-local"
+                  name="slug"
+                />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <label class="block text-gray-700 dark:text-gray-400 col-span-4 sm:col-span-2 font-medium text-sm">
+                Staff Role
+              </label>
+              <div class="col-span-8 sm:col-span-4">
+                <select
+                  class="px-2 py-1 dark:text-gray-300 rounded-md form-select focus:border-gray-200 border-gray-200 dark:border-gray-600 focus:shadow-none focus:ring focus:ring-green-300 dark:focus:border-gray-500 dark:focus:ring-gray-300 dark:bg-gray-700 leading-5 border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="role"
+                >
+                  <option value="" hidden="">
+                    Staff role
+                  </option>
+                  <option value="Admin">Admin</option>
+                  <option value="CEO">CEO</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Accountant">Accountant</option>
+                  <option value="Driver"> Driver </option>
+                  <option value="Security Guard">Security Guard</option>
+                  <option value="Deliver Person">Delivery Person</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="fixed bottom-0 w-full right-0 py-4 lg:py-8 px-6 grid gap-4 lg:gap-6 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+              <button
+                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-gray-600 border-gray-200 border dark:text-gray-500 focus:outline-none rounded-lg border border-gray-200 px-4 w-full mr-3 flex items-center justify-center cursor-pointer bg-gray-200 h-12 bg-white w-full text-red-500 hover:bg-red-50 hover:border-red-100 hover:text-red-600 dark:bg-gray-700 dark:border-gray-700 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-red-700"
+                type="button"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+            <div class="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
+              <button
+                class="align-bottom inline-flex items-center justify-center cursor-pointer leading-5 transition-colors duration-150 font-medium focus:outline-none px-4 py-2 rounded-lg text-sm text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300 w-full h-12"
+                type="submit"
+              >
+                {" "}
+                <span>Add Coupon</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
