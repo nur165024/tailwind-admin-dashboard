@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-
-import SidebarContent from './SidebarContent'
-import { Transition, Backdrop } from '@windmill/react-ui'
-
-import { SidebarContext } from '../../context/SidebarContext'
+import { Backdrop, Transition } from "@windmill/react-ui";
+import React, { useContext } from "react";
+import { SidebarContext } from "../../context/SidebarContext";
+import SidebarContent from "./SidebarContent";
 
 function MobileSidebar() {
-  const { isSidebarOpen, closeSidebar } = useContext(SidebarContext)
+  const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
+
+  console.log(isSidebarOpen);
 
   return (
     <Transition show={isSidebarOpen}>
@@ -36,7 +36,7 @@ function MobileSidebar() {
         </Transition>
       </>
     </Transition>
-  )
+  );
 }
 
-export default MobileSidebar
+export default MobileSidebar;
